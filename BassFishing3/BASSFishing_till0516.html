@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BassMEMO</title>
+    
+    <!-- <link rel="stylesheet" href="reset.css"> -->
+    <link rel="stylesheet" href="css/reset.css">
+    <!-- <link rel="stylesheet" href="css/sample.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/862824129a.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=As9A4gB4JEOrJjHl6nq84lsNltpywnNg0E_0ZYbMQpBmLoYDhPpMuRgIt99ZFonT'></script>
+    <!-- <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=loadMapScenario&key=As9A4gB4JEOrJjHl6nq84lsNltpywnNg0E_0ZYbMQpBmLoYDhPpMuRgIt99ZFonT' async defer></script> -->
+    <script type="module" src="app copy.js"></script>
+        
+</head>
+<body class="bg-blue-300 font-['arial']">
+    
+    <header class="bg-blue-600 h-24 flex items-center justify-center font-medium bg-no-repeat bg-cover bg-center bg-[url('')]">
+        <div>帰宅にかかる時間: <span id="TimeRequired" class="font-bold text-xl text-red-300 underline underline-offset-2"></span></div>
+        <h1 class="text-4xl font-bold"><i class="fa-solid fa-mountain-sun" style="color: #74C0FC;"></i>BassMEMO</h1>
+    </header>
+<section class="md:flex h-scleen">
+    <main id="mainLeft" class="md:w-2/5">
+        <section class="flex justify-around text-center w-scleen my-1">
+            <div class="w-1/3">
+                <input class="w-4/5 text-center py-1 bg-red-700 hover:bg-red-100 rounded-md placeholder-blue-500" type="number" id="cm" placeholder="何センチ">
+            </div>
+            <div class="w-1/3">
+                <input class="w-4/5 text-center py-1 bg-green-300 hover:bg-red-100 rounded-md placeholder-blue-500" type="number" id="gram" placeholder="何グラム">
+            </div>
+            <div class="w-1/3">
+                <select name="" class="w-4/5 text-center py-1 bg-red-300 rounded-md hover:bg-red-100 text-blue-500" id="species">
+                    <option value="" hidden>魚種選択</option>
+                    <option value="スモール">スモール</option>
+                    <option value="ラージ">ラージ</option>
+                    <option value="その他">その他</option>
+                </select>
+            </div>
+            
+        </section>
+
+        <!-- img登録 -->
+        <div class="mb-1">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="text-center"> 
+                    <!--下記は雲イラスト  -->
+                    <p><i class="fas fa-cloud-upload-alt"></i>Bassちゃんを撮影かclickかD&D！</p>
+                    <input class="w-scleen file:bg-red-300 file:rounded-md file:border-0 hover:file:bg-red-100" type="file" name="upload_file" id="input-files">
+                </div>
+            
+            </form>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="text-center"> 
+                    <!--下記は雲イラスト  -->
+                    <p><i class="fas fa-cloud-upload-alt"></i>ルアーを撮影かclickかD&D！</p>
+                    <input class="w-scleen file:bg-red-300 file:rounded-md file:border-0 hover:file:bg-red-100" type="file" name="upload_file" id="Lure-files">
+                </div>
+            </form>
+        </div>
+        
+
+
+        <div class="positionInfo">
+
+            <!-- 逆ジオ -->
+
+            <div  class="positionInfo2">
+                <div class="bg-gray-300" style='width:100%;height:600px' id="mapMain">
+                    <div id="myMap"></div>
+                </div>
+                    <div class="text-red-500" id="myMap2"></div>
+            </div>
+
+            <div class="positionInfo1">
+                <button class="w-full my-1 bg-red-300 rounded-md px-1 hover:bg-red-100 active:bg-yellow-400 text-center" onclick="test()">③位置情報取得</button>
+                <div class="flex justify-around text-sm">
+                    <div class="latitude">緯度：<span id="latitude" value="lati"></span></div>
+                    <div class="longitude">経度：<span id="longitude" value="longi"></span></div>
+                </div>
+            </div>
+        </div>
+                
+        <div>    
+            <div class="text-xs bg-blue-200" id="view" style="overflow: auto;height: auto;">
+            <p class="">天候情報</p>
+            </div>
+        </div>            
+
+    
+        <textarea class="w-full h-20 pl-2 bg-red-300 rounded-md hover:bg-red-100" id="comment" placeholder="⑤採集状況　簡単な場所など"></textarea>
+        <ul class="flex justify-around">
+            <button class="w-2/5 bg-indigo-400 rounded-md px-1 hover:bg-indigo-100 active:bg-yellow-400 text-center" id="save">上記を<span class="">Save</span></button>
+            <button class="w-2/5 bg-indigo-400 rounded-md px-1 hover:bg-indigo-100 active:bg-yellow-400 text-center" id="clear">全てを<span class="">Clear</span></button>
+        </ul>
+        
+            <!-- 任意のデータのみを消すよう -->
+        <div class="border-t-2 border-violet-400 mt-1">
+            <p class="w-scleen" for="">任意のデータを消したいときは下から選んでね</p>
+            <div class="">
+                <select class="text-center w-full mb-1 bg-red-300 rounded-md px-1 hover:bg-red-100" id="dataSelect" >
+                    <option value="" hidden>名前を選択</option>
+                    <!-- キーの選択肢はJavaScriptで動的に生成する -->
+                </select>
+            </div>
+            <button class="w-full bg-indigo-400 rounded-md px-1 hover:bg-indigo-100 active:bg-yellow-400 text-center" id="delete">選んだデータをDelete</button>
+
+        </div>
+
+        <!-- 日付でフィルタ -->
+        <div class="border-t-2 border-violet-400 mt-1">
+            <p class="w-scleen" for="">日付でフィルタ！</p>
+            <div class="filterBox2">
+                <input class="w-full mb-1 bg-red-300 hover:bg-red-100 rounded-md text-center pl-3" type="date" name="" id="dateChoice">
+                <button class="w-full bg-indigo-400 rounded-md hover:bg-indigo-100 active:bg-yellow-400 text-center" id="filterDate">フィルタ</button>
+            </div>
+        </div>
+
+        <!-- 名前でサーチ -->
+        <div class="border-t-2 border-violet-400 my-1">
+            <p for="">名前で検索！<span class="iiwake">(完全一致のみ)</span></p>
+            <div class="searchBox2">
+                <input class="w-full mb-1 text-center bg-red-300 hover:bg-red-100 active:bg-red-100 rounded-md" type="" name="" id="searchName">
+                <button class="w-full bg-indigo-400 rounded-md px-1 hover:bg-indigo-100 active:bg-yellow-400 text-center" id="search">検索！</button>
+            </div>
+            <!-- <div id="searchResults"></div>       -->
+        </div>
+
+        
+
+    </main>
+    <main id="right" class="md:w-3/5 md:mt-0 mt-1 md:border-t-0 border-t-4 md:border-l-4 border-l-0 border-yellow-400">
+        <h1 class="md:ml-3 md:text-left text-center"><今までの記録></h1>
+        <div class="" id="output" style="overflow: auto; width: auto; height: 300px;">
+            <table>
+                <thead class="sticky top-0 z-20 bg-gray-300">
+                    <tr class="text-xs">
+                        <th class="border-r-2 border-amber-200">Key</th>
+                        <th class="px-4 border-r-2 border-amber-200">date</th>
+                        <th class="border-r-2 border-amber-200">cm</th>
+                        <th class="border-r-2 border-amber-200">g</th>
+                        <th class="border-r-2 border-amber-200">種別</th>
+                        <th class="border-r-2 border-amber-200">釣果</th>
+                        <th class="border-r-2 border-amber-200">ヒットルアー</th>
+                        <th class="border-r-2 border-amber-200">緯度経度</th>
+                        <th class="border-r-2 border-amber-200">area</th>
+                        <th class="border-r-2 border-amber-200">天候</th>
+                        <th class="border-r-2 border-amber-200 px-10">気温</th>
+                        <th class="border-r-2 border-amber-200">風速</th>
+                        <th class="border-r-2 border-amber-200">湿気</th>
+                        <th class="border-r-2 border-amber-200">コメント</th>
+                    </tr>
+                </thead>
+                <tbody id="list" class="border-b-4 border-yellow-400">
+                    <!-- データがここに挿入されます -->
+                </tbody>
+
+            </table>
+        </div>
+        <div class="mt-1 pt-1 border-t-4 border-yellow-400" id="addedResults"></div> 
+
+    </main>
+
+</section>
+    
+<footer class="h-24 flex items-center justify-center font-medium bg-no-repeat bg-cover bg-center bg-[url('')]"></footer>
+
+<script type='text/javascript'>
+
+navigator.geolocation.getCurrentPosition(function (position){
+    const lati3 =  position.coords.latitude;
+    const longi3 =  position.coords.longitude;
+    // console.log("lati2:" + lati2);
+    // console.log("longi2:" + longi2);
+    GetMap(lati3, longi3)
+});
+
+function GetMap(lati3, longi3) {
+    var map = new Microsoft.Maps.Map(document.getElementById(''), {
+        /* No need to set credentials if already passed in URL */
+        center: new Microsoft.Maps.Location(lati3, longi3),
+        zoom: 12
+    });
+    console.log("Map initialized");
+
+    Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
+        console.log("Directions module loaded");
+        
+        var directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+        // Set Route Mode to driving
+        directionsManager.setRequestOptions({ 
+            routeMode: Microsoft.Maps.Directions.RouteMode.driving,
+            avoidTolls: true  // 有料ルート回避
+        });
+
+        Microsoft.Maps.Events.addHandler(directionsManager, 'directionsError', function (e) {
+            console.log("An error occurred: " + e.message);
+            $("#TimeRequired").text("An error occurred: " + e.message);
+        });
+
+        let waypoint1 = new Microsoft.Maps.Directions.Waypoint({ location: new Microsoft.Maps.Location(lati3, longi3) });
+        let waypoint2 = new Microsoft.Maps.Directions.Waypoint({ location: new Microsoft.Maps.Location(35.890530, 139.642272) });
+        directionsManager.addWaypoint(waypoint1);
+        directionsManager.addWaypoint(waypoint2);
+        console.log("Waypoints added");
+
+
+        directionsManager.calculateDirections();
+        console.log("Directions calculation requested");
+
+        Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', function (e) {
+            var route = directionsManager.getRouteResult();
+            if (route && route.length > 0 && route[0].routeLegs) {
+                var travelDurationSeconds = route[0].routeLegs.reduce((total, leg) => {
+                    if (leg.summary && leg.summary.time !== undefined) {
+                        return total + leg.summary.time;
+                    } else {
+                        return total;
+                    }
+                }, 0);
+                var travelDurationMinutes = Math.ceil(travelDurationSeconds / 60); // 秒を分に変換
+                console.log("Estimated travel time: " + travelDurationMinutes + " minutes");
+
+
+                // $("#TimeRequired").text(travelDurationMinutes + "分");
+                const now = new Date();
+                now.setMinutes(now.getMinutes() + travelDurationMinutes);
+                $("#TimeRequired").text(now.toLocaleString());
+                console.log(now.setMinutes(now.getMinutes() + travelDurationMinutes));
+            } else {
+                $("#TimeRequired").text("No route information available");
+            }
+        });
+    });
+}
+
+    // $(document).ready(function() {
+    //     console.log("jQuery is working");
+    //     $("#TimeRequired").text("Hello, World!");
+    // });
+</script>
+
+</body>
+</html>
