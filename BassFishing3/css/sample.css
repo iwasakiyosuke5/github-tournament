@@ -1,0 +1,20 @@
+/* Infobox内のアクションボタンを整列するためのCSS
+.binfobox .infobox-actions {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.binfobox .infobox-actions button {
+    background-color: #0078d4;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+} */

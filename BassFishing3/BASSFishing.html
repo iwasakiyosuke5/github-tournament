@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BassMEMO</title>
+    
+    <!-- <link rel="stylesheet" href="reset.css"> -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/sample.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/862824129a.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=As9A4gB4JEOrJjHl6nq84lsNltpywnNg0E_0ZYbMQpBmLoYDhPpMuRgIt99ZFonT'></script>
+    <!-- <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=loadMapScenario&key=As9A4gB4JEOrJjHl6nq84lsNltpywnNg0E_0ZYbMQpBmLoYDhPpMuRgIt99ZFonT' async defer></script> -->
+    <script type="module" src="app copy.js"></script>
+        
+</head>
+<body class="bg-blue-300 font-['arial']">
+
+    <header class="bg-blue-600 h-24 flex items-center justify-center font-medium bg-no-repeat bg-cover bg-center bg-[url('header.jpeg')]">
+        <div>
+            <i class="fa-solid fa-repeat"></i>
+            <button id="routeModeButton" onclick="switchRouteMode()">大好き下道！</button>
+            <div>帰宅時間: </div>
+            <div id="TimeRequired" class="font-bold text-xl text-red-300 underline underline-offset-2"></div>
+        </div>
+        
+        <h1 class="text-4xl font-bold"><i class="fa-solid fa-fish fa-shake" style="color: #2ee53a;"></i>BassMEMO</h1>
+    </header>
+<section class="md:flex h-scleen">
+    <main id="mainLeft" class="md:w-2/5 ">
+        <section class="flex justify-around text-center w-scleen my-1">
+            <div class="w-1/3">
+                <input class="w-4/5  py-1 bg-red-700 hover:bg-red-100 rounded-md placeholder-blue-500" type="number" id="cm" placeholder="何センチ">
+            </div>
+            <div class="w-1/3">
+                <input class="w-4/5  py-1 bg-green-300 hover:bg-red-100 rounded-md placeholder-blue-500" type="number" id="gram" placeholder="何グラム">
+            </div>
+            <div class="w-1/3">
+                <select name="" class="w-4/5  py-1 bg-red-300 rounded-md hover:bg-red-100 text-blue-500" id="species">
+                    <option value="" hidden>魚種選択</option>
+                    <option value="スモール">スモール</option>
+                    <option value="ラージ">ラージ</option>
+                    <option value="その他">その他</option>
+                </select>
+            </div>
+
+        </section>
+
+        <!-- img登録 -->
+        <div class="mb-1">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="text-center"> 
+                    <!--下記は雲イラスト  -->
+                    <p><i class="fas fa-cloud-upload-alt"></i>Bassちゃんを撮影かclickかD&D！</p>
+                    <input class="w-scleen file:bg-red-300 file:rounded-md file:border-0 hover:file:bg-red-100" type="file" name="upload_file" id="input-files">
+                </div>
+            
+            </form>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="text-center"> 
+                    <!--下記は雲イラスト  -->
+                    <p><i class="fas fa-cloud-upload-alt"></i>ルアーを撮影かclickかD&D！</p>
+                    <input class="w-scleen file:bg-red-300 file:rounded-md file:border-0 hover:file:bg-red-100" type="file" name="upload_file" id="Lure-files">
+                </div>
+            </form>
+        </div>
+        
+        <div class="">
+            <ul class="flex justify-around">
+                <h1><i class="fa-solid fa-circle-dot" style="color: #13f00f;"></i>600g以下</h1>
+                <h1><i class="fa-solid fa-circle-dot" style="color: #0f53f0;"></i>1200g以下</h1>
+                <h1><i class="fa-solid fa-circle-dot" style="color: #f20713;"></i>筋肉マン太郎</h1>
+            </ul>
+        </div>
+
+        <div class="positionInfo">
+
+            <!-- 逆ジオ -->
+
+            <div  class="positionInfo2">
+                <div class="bg-gray-300 mx-auto outline outline-offset-0 outline-cyan-900" style='width:95%;height:600px' id="mapMain">
+                    <div class="flex justify-center" id="myMap"></div>
+                </div>
+                    <div class="text-red-500" id="myMap2"></div>
+            </div>
+
+            <div class="text-center">
+                <button class="w-4/5 mt-2 mb-1 bg-red-300 rounded-md px-1 hover:bg-red-100 active:bg-yellow-400 text-center" onclick="test()">位置情報取得</button>
+                <div class="flex justify-around text-sm">
+                    <div class="latitude">緯度：<span id="latitude" value="lati"></span></div>
+                    <div class="longitude">経度：<span id="longitude" value="longi"></span></div>
+                </div>
+            </div>
+        </div>
+                
+        <div>    
+            <div class="text-xs bg-blue-200" id="view" style="overflow: auto;height: auto;">
+            <p class="ml-2 flex justify-center">天候情報</p>
+            </div>
+            <div class="text-xs bg-blue-200" style="overflow: auto;height: auto;">
+                <a class="ml-2 flex justify-center" href="https://gsacademy02.sakura.ne.jp/BassFishing/BFWeatherInfo.html">詳細情報に進む！</a>
+            </div>
+            
+        </div>            
+
+    
+        <textarea class="w-full h-20 pl-2 bg-red-300 rounded-md hover:bg-red-100" id="comment" placeholder="コメント！"></textarea>
+        <ul class="flex justify-around">
+            <button class="w-2/5 bg-indigo-400 rounded-md px-1 hover:bg-indigo-100 active:bg-yellow-400 text-center" id="save">ピンを立てて<span class="">Save</span></button>
+            <button class="w-2/5 bg-indigo-400 rounded-md px-1 hover:bg-indigo-100 active:bg-yellow-400 text-center" id="clear">全てを<span class="">Clear</span></button>
+        </ul>
+        
+            <!-- 任意のデータのみを消すよう -->
+        <div class="border-t-2 border-violet-400 mt-1">
+            <p class="w-scleen ml-2" for="">個別データ削除 (mapからでもOK)</p>
+            <div class="text-center">
+                <select class="text-center w-4/5 mb-1 bg-red-300 rounded-md px-1 hover:bg-red-100" id="dataSelect" >
+                    <option value="" hidden>日付を選択</option>
+                    <!-- キーの選択肢はJavaScriptで動的に生成する -->
+                </select>
+                <button class="w-4/5 bg-indigo-400 rounded-md px-1 hover:bg-indigo-100 active:bg-yellow-400 text-center" id="delete">選んだデータをDelete</button>
+            </div>
+            
+
+        </div>
+
+        <!-- areaでフィルタ -->
+        <div class="border-t-2 border-violet-400 mt-1 mb-2">
+            <p class="w-scleen ml-2" for="">area毎！</p>
+            <div class="text-center">
+                <select class="text-center w-4/5 mb-1 bg-red-300 rounded-md px-1 hover:bg-red-100" id="areaSelect" >
+                    <option value="" hidden>areaを選択</option>
+                    <!-- キーの選択肢はJavaScriptで動的に生成する -->
+                </select>
+                <button class="w-4/5 bg-indigo-400 rounded-md hover:bg-indigo-100 active:bg-yellow-400 text-center" id="filterarea">フィルタ</button>
+            </div>
+        </div>
+
+
+        
+
+    </main>
+    <main id="right" class="md:w-3/5 md:mt-0 mt-1 md:border-t-0 border-t-4 md:border-l-4 border-l-0 border-yellow-400">
+        <h1 class="md:ml-3 md:text-left text-center"><今までの記録></h1>
+        <div class="h-scleen" id="output" style="overflow: auto; width: auto; height: 600px;">
+            <table>
+                <thead class="sticky top-0 z-20 bg-gray-300">
+                    <tr class="text-xs">
+                        <!-- <th class="border-r-2 border-amber-200">Key</th> -->
+                        <th class="px-2 text-center border-r-2 border-amber-200">date</th>
+                        <th class="px-2 font-xs text-center border-r-2 border-amber-200">cm</th>
+                        <th class="px-4 text-center border-r-2 border-amber-200">g</th>
+                        <th class="px-4 text-center border-r-2 border-amber-200">種別</th>
+                        <th class="px-10 w-1/4 text-center border-r-2 border-amber-200">釣果</th>
+                        <th class="px-10 w-1/4 text-center border-r-2 border-amber-200">ヒットルアー</th>
+                        <th class="px-5 text-center border-r-2 border-amber-200">area</th>
+                        <th class="px-8 text-center border-r-2 border-amber-200">天候</th>
+                        <th class="text-center border-r-2 border-amber-200">気温</th>
+                        <th class="px-4 text-center border-r-2 border-amber-200">風速</th>
+                        <th class="px-4 text-center border-r-2 border-amber-200">湿気</th>
+                        <th class="px-10 text-center border-r-2 border-amber-200">コメント</th>
+                    </tr>
+                </thead>
+                <tbody id="list" class="border-b-4 border-yellow-400">
+                    <!-- データがここに挿入されます -->
+                </tbody>
+
+            </table>
+            
+        </div>
+            <div class="mt-1 pt-1 border-t-4 border-yellow-400" id="addedResults"></div> 
+
+    </main>
+
+</section>
+    
+
+<script type='text/javascript'>
+let currentRouteModeIndex = 0;
+const routeModes = [
+    { label: '大好き下道！', mode: 'driving_avoidTolls' },
+    { label: '高速...', mode: 'driving_includeTolls' },
+    { label: '歩き', mode: 'walking' }
+];
+
+let lati3, longi3, map;
+
+navigator.geolocation.getCurrentPosition(function (position) {
+    lati3 = position.coords.latitude;
+    longi3 = position.coords.longitude;
+    initializeMap(lati3, longi3);
+});
+
+function initializeMap(lati3, longi3) {
+    map = new Microsoft.Maps.Map(document.getElementById(''), {
+        center: new Microsoft.Maps.Location(lati3, longi3),
+        zoom: 12
+    });
+    console.log("Map initialized");
+
+    // Initial calculation with default route mode
+    calculateRoute(lati3, longi3, map);
+}
+
+function switchRouteMode() {
+    currentRouteModeIndex = (currentRouteModeIndex + 1) % routeModes.length;
+    const routeModeButton = document.getElementById('routeModeButton');
+    routeModeButton.textContent = routeModes[currentRouteModeIndex].label;
+    calculateRoute(lati3, longi3, map);
+}
+
+function calculateRoute(lati3, longi3, map) {
+    Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
+        console.log("Directions module loaded");
+
+        var directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+        var routeMode = routeModes[currentRouteModeIndex].mode;
+        var requestOptions = {};
+
+        switch (routeMode) {
+            case 'driving_avoidTolls':
+                requestOptions = { routeMode: Microsoft.Maps.Directions.RouteMode.driving, avoidTolls: true };
+                break;
+            case 'driving_includeTolls':
+                requestOptions = { routeMode: Microsoft.Maps.Directions.RouteMode.driving, avoidTolls: false };
+                break;
+            case 'walking':
+                requestOptions = { routeMode: Microsoft.Maps.Directions.RouteMode.walking };
+                break;
+        }
+
+        directionsManager.setRequestOptions(requestOptions);
+
+        Microsoft.Maps.Events.addHandler(directionsManager, 'directionsError', function (e) {
+            console.log("An error occurred: " + e.message);
+            $("#TimeRequired").text("error ");
+        });
+
+        let waypoint1 = new Microsoft.Maps.Directions.Waypoint({ location: new Microsoft.Maps.Location(lati3, longi3) });
+        let waypoint2 = new Microsoft.Maps.Directions.Waypoint({ location: new Microsoft.Maps.Location(35.890530, 139.642272) });
+        directionsManager.addWaypoint(waypoint1);
+        directionsManager.addWaypoint(waypoint2);
+        console.log("Waypoints added");
+
+        directionsManager.calculateDirections();
+        console.log("Directions calculation requested");
+
+        Microsoft.Maps.Events.addHandler(directionsManager, 'directionsUpdated', function (e) {
+            var route = directionsManager.getRouteResult();
+            if (route && route.length > 0 && route[0].routeLegs) {
+                var travelDurationSeconds = route[0].routeLegs.reduce((total, leg) => {
+                    if (leg.summary && leg.summary.time !== undefined) {
+                        return total + leg.summary.time;
+                    } else {
+                        return total;
+                    }
+                }, 0);
+                var travelDurationMinutes = Math.ceil(travelDurationSeconds / 60); // 秒を分に変換
+                console.log("Estimated travel time: " + travelDurationMinutes + " minutes");
+
+                const now = new Date();
+                now.setMinutes(now.getMinutes() + travelDurationMinutes);
+
+                const options = { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+                const formattedDate = now.toLocaleString('ja-JP', options);
+                $("#TimeRequired").text(formattedDate);
+                console.log(formattedDate);                
+
+                // $("#TimeRequired").text(now.toLocaleString());
+                // console.log(now.toLocaleString());
+            } else {
+                $("#TimeRequired").text("No route information available");
+            }
+        });
+    });
+}
+
+</script>
+<footor class="border-t-2 border-yellow-400 h-36 flex items-center justify-center font-medium bg-no-repeat bg-cover bg-center bg-[url('M135i.jpeg')]">
+</footer>
+</body>
+</html>
