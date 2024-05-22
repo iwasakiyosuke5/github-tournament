@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Sample[練習版]</title>
+    <title>BFWeatherInfo</title>
     <link rel="stylesheet" href="css/reset.css">
     <style>
         #view{
@@ -35,8 +35,8 @@
 src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js"
 integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg=="
 crossorigin="anonymous"></script>
-<script
-src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/862824129a.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </head>
 <body>
     <header class="bg-blue-300 h-24 flex items-center justify-center font-medium bg-no-repeat bg-cover bg-center bg-[url('')]">
@@ -72,6 +72,7 @@ src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-ada
 
             <div class="">
                 <i class="">3時間毎の</i>
+                <i class="fa-solid fa-repeat"></i>
                 <button id="prmButton" onclick="prmMode()"><span class="">気温</span>を確認！</button>
                 <div></div>
                 <div id="prmRequired" class=""></div>
